@@ -23,7 +23,17 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const protectedPaths = ['/search', '/watchlist']
+  const isProtected = protectedPaths.some((path) =>
+    request.nextUrl.pathname.startsWith(path)
+  )
+
+  if (isProtected && !user) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
   return response
 }
 

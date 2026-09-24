@@ -1,11 +1,20 @@
-import Image from "next/image";
+import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        
-      </main>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-950 text-white">
+      <h1 className="text-3xl font-semibold">🎬 Movie Watchlist</h1>
+      <div className="flex gap-4">
+        <Link href="/search" className="rounded bg-red-600 px-4 py-2">
+          Search Movies
+        </Link>
+        <Link href="/watchlist" className="rounded bg-zinc-800 px-4 py-2">
+          My Watchlist
+        </Link>
+        <Link href="/login" className="rounded bg-zinc-800 px-4 py-2">
+          Login
+        </Link>
+      </div>
     </div>
-  );
+  )
 }
