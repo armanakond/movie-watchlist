@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const router = useRouter()
   const supabase = createClient()
+  console.log('SUPABASE URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
