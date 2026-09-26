@@ -26,10 +26,8 @@ export default function WatchlistPage() {
   async function fetchWatchlist() {
     const res = await fetch('/api/watchlist')
     const data: WatchlistItem[] = await res.json()
-    console.log('Watchlist response:', data)
     setItems(data)
 
-    // fetch movie details for each item, in parallel
     const detailsEntries = await Promise.all(
       data.map(async (item) => {
         const res = await fetch(`/api/movie/${item.tmdb_movie_id}`)
@@ -45,6 +43,19 @@ export default function WatchlistPage() {
   async function removeItem(id: string) {
     await fetch(`/api/watchlist/${id}`, { method: 'DELETE' })
     setItems(items.filter((item) => item.id !== id))
+  }
+
+  async function toggleStatus(id: string, currentStatus: string) {
+    const newStatus = currentStatus === 'watched' ? 'want_to_watch' : 'watched'
+
+    const res = await fetch(`/api/watchlist/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus }),
+    })
+    const updated = await res.json()
+
+    setItems(items.map((item) => (item.id === id ? updated : item)))
   }
 
   if (loading) {
@@ -77,6 +88,12 @@ export default function WatchlistPage() {
               />
               <p className="text-sm font-medium">{movie.title}</p>
               <p className="text-xs text-zinc-400">{item.status}</p>
+              <button
+                onClick={() => toggleStatus(item.id, item.status)}
+                className="w-full rounded bg-zinc-700 py-1 text-xs hover:bg-zinc-600"
+              >
+                Mark as {item.status === 'watched' ? 'Want to Watch' : 'Watched'}
+              </button>
               <button
                 onClick={() => removeItem(item.id)}
                 className="w-full rounded bg-zinc-800 py-1 text-xs hover:bg-zinc-700"
