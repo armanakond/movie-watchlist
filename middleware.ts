@@ -23,16 +23,14 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+const { data: { user } } = await supabase.auth.getUser()
 
-  const protectedPaths = ['/search', '/watchlist']
-  const isProtected = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  )
+const isPublicPath = request.nextUrl.pathname === '/login'
+const isApiRoute = request.nextUrl.pathname.startsWith('/api')
 
-  if (isProtected && !user) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+if (!isPublicPath && !isApiRoute && !user) {
+  return NextResponse.redirect(new URL('/login', request.url))
+}
 
   return response
 }

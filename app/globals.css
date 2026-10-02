@@ -10,6 +10,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-void: #12101C;
+  --color-panel: #1E1B2E;
+  --color-gold: #F5B942;
+  --color-magenta: #C74DFF;
+  --color-ink: #F0EDFF;
+  --color-dim: #9A93B8;
+
+  --font-display: var(--font-display), sans-serif;
+  --font-body: var(--font-body), sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
